@@ -25,9 +25,9 @@ page-navigation: false
 
 <div class="bio-card">
   <img src="images/EMW.jpg" alt="Emily Malcolm-White">
-  <h4>Emily Malcolm-White </h4>
+  <h4>Faith Frings </h4>
   <p><i>(she/her)</i></p>
-  <h6>Lecturer<br> 
+  <h6>Integrative Biology PhD Candidate<br> 
   Department of Mathematics and Statistics<br>
   Middlebury College </h6>
   <p>Emily Malcolm-White is an educator and student support specialist with a love for developing and teaching quantitative skills to students from a wide variety of backgrounds. She is committed to fostering an inclusive and equitable learning environment for all students. At Middlebury College, Emily teaches a variety of courses including statistics, data science, and mathematics courses.  </p>
