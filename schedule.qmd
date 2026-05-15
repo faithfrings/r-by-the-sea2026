@@ -5,10 +5,10 @@ format: html
 
 # Logistics for Enrolled Students
 
-- We will meet virtually via Zoom during the first week (June 15 - June 21).  Check your email for the Zoom link.
+- We will meet virtually via Zoom during the first week (June 15 - June 21).  Check your email for the Teams link.
 - We transition to Shoals Marine Lab on Appledore Island for the second week of the course (June 22 - 29). 
 - Communication for this class will primarily happen on [Slack](https://slack.com/). We recommend that you download the mobile app for ease of communication while we are on island. Check your email for the invite link.
-- You should submit your homework assignments via Canvas. If, for whatever reason, you don't have access to Canvas you should email your assignment submissions to Jannine [Jannine.Chamorro@unh.edu](mailto:jannine.chamorror@unh.edu) and Faith [Faith.Frings@unh.edu](mailto:faith.frings@unh.edu). 
+- You should submit your homework assignments via Google Drive. If, for whatever reason, you don't have access to Google Drive, you should email your assignment submissions to Jannine [Jannine.Chamorro@unh.edu](mailto:jannine.chamorror@unh.edu) and Faith [Faith.Frings@unh.edu](mailto:faith.frings@unh.edu). 
 
 # Install R and RStudio
 
