@@ -42,7 +42,7 @@ This data frame contains the following columns:
 `case`
 observation number
 `site`
-one of seven locations where possums were trapped. The sites were, in order,Cambarville, Bellbird, Whian Whian, Byrangery, Conondale, Allyn River and Bulburin
+one of seven locations where possums were trapped. The sites were, in order, Cambarville, Bellbird, Whian Whian, Byrangery, Conondale, Allyn River and Bulburin
 `Pop`
 a factor which classifies the sites as Vic Victoria, other New South Wales or Queensland
 `sex`
@@ -75,7 +75,7 @@ Sometimes everything we need (data, functions, etc) are not available in base R.
 First, you need to download the package from the right hand menu --> 
 You only need to do this once. 
 
-In each new .Rmd document, you need to call any packages you want to use  but adding the code `library(packagename)` inside an R chunk. 
+In each new .qmd document, you need to call any packages you want to use  but adding the code `library(packagename)` inside an R chunk. 
 
 For example, in this class we will use the `tidyverse` package a lot. 
 
@@ -96,7 +96,7 @@ We can use the `filter` function to extract ***rows*** from the data that have a
 For example, we may be interested in only looking at female possums.  
 
 ```{r}
-#start with the possums dataset, the pipe "%" means apply the action on the following line to the previous line. In this case, pick out only the rows were the sex variable is "f" 
+#start with the possums dataset, the pipe " |> " means apply the action on the following line to the previous line. In this case, pick out only the rows were the sex variable is "f" 
 
 
 
