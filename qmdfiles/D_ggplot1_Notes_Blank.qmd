@@ -26,8 +26,8 @@ data("possum")
 # Recall our work from the other days
 
 ```{r}
-possum_large <- possum %>% 
-  select(site,sex,totlngth) %>%
+possum_large <- possum |>  
+  select(site,sex,totlngth) |> 
   filter(sex=='f') %>%
   group_by(site) %>%
   summarize(mean_totlngth = mean(totlngth))
