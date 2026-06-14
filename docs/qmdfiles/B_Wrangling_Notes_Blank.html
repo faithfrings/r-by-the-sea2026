@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.36">
+<meta name="generator" content="quarto-1.9.37">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -4173,13 +4173,13 @@ color: #000;
 </div>
 <p>Let’s take a look at this data for a minute to see what information has been recorded.</p>
 <p>This data frame contains the following columns:</p>
-<p><code>case</code> observation number <code>site</code> one of seven locations where possums were trapped. The sites were, in order,Cambarville, Bellbird, Whian Whian, Byrangery, Conondale, Allyn River and Bulburin <code>Pop</code> a factor which classifies the sites as Vic Victoria, other New South Wales or Queensland <code>sex</code> a factor with levels f female, m male <code>age</code> age <code>hdlngth</code> head length, in cm <code>skullw</code> skull width, in cm <code>totlngth</code> total length, in cm <code>taill</code> tail length, in cm <code>footlgth</code> foot length, in cm <code>earconch</code> ear conch length, in cm <code>eye</code> distance from medial canthus to lateral canthus of right eye, in cm <code>chest</code> chest girth, in cm <code>belly</code> belly girth, in cm</p>
+<p><code>case</code> observation number <code>site</code> one of seven locations where possums were trapped. The sites were, in order, Cambarville, Bellbird, Whian Whian, Byrangery, Conondale, Allyn River and Bulburin <code>Pop</code> a factor which classifies the sites as Vic Victoria, other New South Wales or Queensland <code>sex</code> a factor with levels f female, m male <code>age</code> age <code>hdlngth</code> head length, in cm <code>skullw</code> skull width, in cm <code>totlngth</code> total length, in cm <code>taill</code> tail length, in cm <code>footlgth</code> foot length, in cm <code>earconch</code> ear conch length, in cm <code>eye</code> distance from medial canthus to lateral canthus of right eye, in cm <code>chest</code> chest girth, in cm <code>belly</code> belly girth, in cm</p>
 </section>
 <section id="installing-and-using-packages" class="level1">
 <h1>Installing and Using Packages</h1>
 <p>Sometimes everything we need (data, functions, etc) are not available in base R. In R, expert users will package up useful things like data and functions into packages that be download and used.</p>
 <p>First, you need to download the package from the right hand menu –&gt; You only need to do this once.</p>
-<p>In each new .Rmd document, you need to call any packages you want to use but adding the code <code>library(packagename)</code> inside an R chunk.</p>
+<p>In each new .qmd document, you need to call any packages you want to use but adding the code <code>library(packagename)</code> inside an R chunk.</p>
 <p>For example, in this class we will use the <code>tidyverse</code> package a lot.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -4195,7 +4195,7 @@ color: #000;
 <p>We can use the <code>filter</code> function to extract <strong><em>rows</em></strong> from the data that have a particular characteristic.</p>
 <p>For example, we may be interested in only looking at female possums.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#start with the possums dataset, the pipe &quot;%&quot; means apply the action on the following line to the previous line. In this case, pick out only the rows were the sex variable is &quot;f&quot; </span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#start with the possums dataset, the pipe &quot; |&gt; &quot; means apply the action on the following line to the previous line. In this case, pick out only the rows were the sex variable is &quot;f&quot; </span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>

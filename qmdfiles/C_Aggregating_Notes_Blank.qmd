@@ -1,8 +1,6 @@
 ---
 title: 'Notes C'
 subtitle: 'Aggregating data with `summarize()`, `group_by()`'
-author: "EMW"
-date: "Tues, Jun 4, 2024"
 format:
   html:
     toc: true
@@ -25,16 +23,14 @@ Size measurements, clutch observations, and blood isotope ratios for adult forag
 
 ```{r message=FALSE, warning=FALSE}
 #LOAD DATA 
-library(palmerpenguins)
-data(penguins)
+
 ```
 
 
 # Clean up the data to remove rows with missing data
 
 ```{r}
-penguins <- penguins %>%
-  drop_na()
+
 #sometimes this is appropriate...
 #sometimes dropping missing values might introduce bias into the study
 ```
@@ -44,18 +40,13 @@ penguins <- penguins %>%
 Suppose we are interested in the average/mean bill length of all Adelie penguins: 
 
 ```{r}
-penguins %>% 
-  filter(species == "Adelie") %>% 
-  summarize(Mean_bill_length = mean(bill_length_mm),
-            Mean_bill_depth = mean(bill_depth_mm))
+
 ```
 
 Suppose we are interested in the average bill length AND average bill depth of all Adelie penguins: 
 
 ```{r}
-penguins %>% 
-  filter(species == "Adelie") %>% 
-  summarize(Mean_bill_length = mean(bill_length_mm))
+
 ```
 
 There are lots of other functions available: 
@@ -72,10 +63,7 @@ There are lots of other functions available:
 Suppose we are interested in the average bill length AND the median bill length of all Adelie penguins: 
 
 ```{r}
-penguins %>% 
-  filter(species == "Adelie") %>% 
-  summarize(mean_bill_length_mm = mean(bill_length_mm), 
-              median_bill_length = median(bill_length_mm))
+
 
 ```
 
@@ -85,10 +73,6 @@ Let's say we were interested in the average bill length and bill depth of all pe
 
 
 ```{r}
-penguins %>% 
-  group_by(species) %>%  
-  summarize(Mean_bill_length = mean(bill_length_mm),
-            Mean_bill_depth = mean(bill_depth_mm))
 
 ```
 
@@ -97,15 +81,8 @@ penguins %>%
 Suppose we want the average bill length and average bill depth broken down by both species and sex: 
 
 ```{r}
-penguins %>% 
-  group_by(species, sex) %>%  
-  summarize(Mean_bill_length = mean(bill_length_mm),
-            Mean_bill_depth = mean(bill_depth_mm))
 
-penguins %>% 
-  group_by(sex, species) %>%  
-  summarize(Mean_bill_length = mean(bill_length_mm),
-            Mean_bill_depth = mean(bill_depth_mm))
+
 
 ```
 
@@ -114,18 +91,12 @@ penguins %>%
 Suppose we want to calculate the number of distinct islands each species is found on:
 
 ```{r}
-penguins %>% 
-  group_by(species) %>% 
-  summarize(no_distinct_islands = n_distinct(island))
+
 ```
 
 Suppose we are interested in how many penguins of each species are on each island in the year 2007 (with measurement data available): 
 
 ```{r}
-penguins %>% 
-  filter(year == 2007) %>% 
-  group_by(species, island) %>% 
-  summarize(count=n())
-  
+
 ```
 
