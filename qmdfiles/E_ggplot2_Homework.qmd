@@ -29,7 +29,7 @@ library(gapminder)
 data("gapminder")
 ```
 
-Reproduce the graphs as best as you can -- images of the graphs are available on the assignment page on Canvas. Focus your efforts on getting the content correct. If you have time at the end, as a bonus, you can try to match the styling as closely as you can. 
+Reproduce the graphs as best as you can -- images of the graphs are available on the Google Drive. Focus your efforts on getting the content correct. If you have time at the end, as a bonus, you can try to match the styling as closely as you can. You do not need to complete the last gapminder graph at the bottom of the document. 
 
 1. penguins scatterplot
 
@@ -60,11 +60,4 @@ Reproduce the graphs as best as you can -- images of the graphs are available on
 ```{r}
 
 ```
-
-6. gapminder labels -- hint: the labels comes from using `geom_label_repel()` in the `ggrepel` package. It may be quite a challenge to label the 5 countries. It is okay to just label one of the countries. 
-
-```{r}
-
-```
-
 
