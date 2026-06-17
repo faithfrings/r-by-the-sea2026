@@ -361,7 +361,7 @@
     "href": "qmdfiles/D_ggplot1_Notes_Blank.html",
     "title": "Notes D",
     "section": "",
-    "text": "library(tidyverse)\n\n\n#Import the possum data again\nlibrary(DAAG)\ndata(\"possum\")\n\n\nRecall our work from the other days\n\npossum_large &lt;- possum |&gt;  \n  select(site,sex,totlngth) |&gt; \n  filter(sex=='f') %&gt;%\n  group_by(site) %&gt;%\n  summarize(mean_totlngth = mean(totlngth))\n\n\n\nggplot: barplots with geom_bar\n\n\nggplot(possum_large, aes(x=site, y = mean_totlngth)) +\n  geom_bar(stat = \"identity\")\n\n\n\n\n\n\n\n\nIs there any improvements we could make to this graph?\n\n\nTo better view text\n\n#OR\n\n\n\nLabels, Colors, and Themes\n\n\nggplot: scatterplot with geom_point\n\n\nWith labels"
+    "text": "library(tidyverse)\n\n\n#Import the possum data again using the csv file or the DAAG package.\nlibrary(DAAG)\ndata(\"possum\")\n\n\nRecall our work from the other days\n\npossum_large &lt;- possum |&gt;  \n  select(site,sex,totlngth) |&gt; \n  filter(sex=='f') %&gt;%\n  group_by(site) %&gt;%\n  summarize(mean_totlngth = mean(totlngth))\n\n\n\nggplot: barplots with geom_bar\n\n\nggplot(possum_large, aes(x=site, y = mean_totlngth)) +\n  geom_bar(stat = \"identity\")\n\n\n\n\n\n\n\n\nIs there any improvements we could make to this graph?\n\n\nTo better view text\n\n##OR\n\n\n\nLabels, Colors, and Themes\n\n\nggplot: scatterplot with geom_point\n\n\nWith labels"
   },
   {
     "objectID": "qmdfiles/J_seal_data_project.html",

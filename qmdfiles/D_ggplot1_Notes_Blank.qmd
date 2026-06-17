@@ -18,7 +18,7 @@ library(tidyverse)
 ```
 
 ```{r}
-#Import the possum data again
+#Import the possum data again using the csv file or the DAAG package.
 library(DAAG)
 data("possum")
 ```
@@ -48,8 +48,7 @@ Is there any improvements we could make to this graph?
 
 ```{r}
 
-
-#OR
+##OR
 
 ```
 
@@ -66,6 +65,7 @@ Is there any improvements we could make to this graph?
 ```{r}
 
 ```
+
 # With labels
 
 ```{r}
