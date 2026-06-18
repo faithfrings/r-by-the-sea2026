@@ -123,7 +123,7 @@
     "href": "qmdfiles/E_ggplot2_Homework.html",
     "title": "Homework E",
     "section": "",
-    "text": "Code\n#LOAD PACKAGES \nlibrary(tidyverse)\n\n#Load Penguins Data\nlibrary(palmerpenguins)\ndata(\"penguins\")\n\n#Load Iris Data\ndata(\"iris\")\n\n# Load gapminder Data\nlibrary(gapminder)\ndata(\"gapminder\")\n\n\nReproduce the graphs as best as you can – images of the graphs are available on the assignment page on Canvas. Focus your efforts on getting the content correct. If you have time at the end, as a bonus, you can try to match the styling as closely as you can.\n\npenguins scatterplot\n\n\niris boxplot\n\n\ngapminder line chart\n\n\nmpg bar chart\n\n\npenguins facet wrap\n\n\ngapminder labels – hint: the labels comes from using geom_label_repel() in the ggrepel package. It may be quite a challenge to label the 5 countries. It is okay to just label one of the countries."
+    "text": "Code\n#LOAD PACKAGES \nlibrary(tidyverse)\n\n#Load Penguins Data\nlibrary(palmerpenguins)\ndata(\"penguins\")\n\n#Load Iris Data\ndata(\"iris\")\n\n# Load gapminder Data\nlibrary(gapminder)\ndata(\"gapminder\")\n\n\nReproduce the graphs as best as you can – images of the graphs are available on the Google Drive. Focus your efforts on getting the content correct. If you have time at the end, as a bonus, you can try to match the styling as closely as you can. You do not need to complete the last gapminder graph at the bottom of the document.\n\npenguins scatterplot\n\n\niris boxplot\n\n\ngapminder line chart\n\n\nmpg bar chart\n\n\npenguins facet wrap"
   },
   {
     "objectID": "qmdfiles/I_Lubridate_Notes_Blank.html",
@@ -186,7 +186,7 @@
     "href": "qmdfiles/F_Joining_Notes_Blank.html",
     "title": "Notes F",
     "section": "",
-    "text": "The Portal Project is a long-term ecological study being conducted near Portal, AZ. Since 1977, the site has been used to study the interactions among rodents, ants and plants and their respective responses to climate. To study the interactions among organisms, we experimentally manipulate access to 24 study plots. This study has produced over 100 scientific papers and is one of the longest running ecological studies in the U.S (Pulled directly from the Portal Project Website)\n\n#LOAD PACKAGES\nlibrary(tidyverse)\n\n#LOAD DATA\n\n## Portal_rodent contains the rodent trapping data. Each individual of a target species is PIT tagged and data on species, location caught (plot and stake), sex, reproductive condition, weight, and hindfoot length are recorded. \nportal_rodent &lt;- read.csv(\"https://github.com/weecology/PortalData/raw/main/Rodents/Portal_rodent.csv\")"
+    "text": "The Portal Project is a long-term ecological study being conducted near Portal, AZ. Since 1977, the site has been used to study the interactions among rodents, ants and plants and their respective responses to climate. To study the interactions among organisms, we experimentally manipulate access to 24 study plots. This study has produced over 100 scientific papers and is one of the longest running ecological studies in the U.S (Pulled directly from the Portal Project Website)\n\n\n#LOAD PACKAGES\nlibrary(tidyverse)\n\n#LOAD DATA\n\n## Portal_rodent contains the rodent trapping data. Each individual of a target species is PIT tagged and data on species, location caught (plot and stake), sex, reproductive condition, weight, and hindfoot length are recorded. \nportal_rodent &lt;- read.csv(\"https://github.com/weecology/PortalData/raw/main/Rodents/Portal_rodent.csv\")"
   },
   {
     "objectID": "qmdfiles/F_Joining_Notes_Blank.html#matching-key-variable-names",
@@ -207,7 +207,7 @@
     "href": "qmdfiles/F_Joining_Notes_Blank.html#why-is-this-useful",
     "title": "Notes F",
     "section": "Why is this useful?",
-    "text": "Why is this useful?\nUpdating labels:\n\n# portal_rodent %&gt;% \n#   drop_na(hfl) %&gt;% \n#   group_by(species) %&gt;% \n#   summarize(mean_hf = mean(hfl), min_hf = min(hfl), max_hf = max(hfl), count = n())\n\n#VS\n\n# portal_joined %&gt;% \n#   drop_na(hfl) %&gt;% \n#   group_by(commonname, scientificname) %&gt;% \n#   summarize(mean_hf = mean(hfl), min_hf = min(hfl), max_hf = max(hfl), count = n())\n\nExploring relationships between variables in separate tables:\n\n# portal_weather_joined %&gt;% \n#   group_by(year, month, day) %&gt;% \n#   summarize(count_caught = n(), mean_airtemp = mean_airtemp) %&gt;% \n#   ggplot(aes(x=mean_airtemp, y=count_caught)) +\n#   geom_point() + \n#   geom_smooth(method='lm')"
+    "text": "Why is this useful?\nUpdating labels:\nExploring relationships between variables in separate tables:"
   },
   {
     "objectID": "qmdfiles/D_ggplot1_Homework.html",
