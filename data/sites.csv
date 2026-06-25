@@ -1,0 +1,7 @@
+site,lat,lon,day,env,people
+Portsmouth,43.0796844,-70.7613806,1,land,18
+Shoals Marine Lab,42.9874261,-70.6150963,1,land ,100
+CDT - 1,42.99380526,-70.62042977,1,sea,13
+CDT - 2,42.9936882,-70.61087227,1,sea,13
+Otter Trawl - 1,42.97968333,-70.66473333,2,sea,26
+Otter Trawl - 2,42.9776,-70.6618,2,sea,26

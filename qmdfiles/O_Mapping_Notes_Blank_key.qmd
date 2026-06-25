@@ -1,0 +1,322 @@
+---
+title: "Notes O "
+subtitle: "Mapping in R"
+format:
+  html:
+    toc: true
+    code-overflow: wrap
+    code-fold: false
+    embed-resources: true
+execute: 
+  message: FALSE
+  warning: FALSE
+editor_options: 
+  chunk_output_type: console
+---
+
+![](images/jc_example_map_1.png){width="499"}
+
+![](images/jc_example_map 2.png){width="499"}
+
+![](images/jc_example_map_3.png){width="334"}
+
+### Before we get started, some context:
+
+- `R` is ***fantastic*** for spacial analysis (not covered in this class... look for classes related to spacial statistics)
+- `R` is *great* for interactive data visualization (via `leaflet` or `shiny`... more on this on Thursday)
+- `R` is *okay* at spacial data visualization (creating maps).
+  - There are many different packages in `R` for creating maps. I've found that different packages perform best for different maps. We will talk about a few different ones today.
+  - If you have a highly map-centric project, there is nothing wrong with working in ArcGIS or QGIS if you find the mapping tools in R insufficient. There are many recent improvements with new packages (like `sf`, `rgdal` and `rgeos`) which profiles much of the functionality of GIS packages! Exciting! (not very beginner friendly - requires familiarity with GIS concepts)
+
+# Using the `maps` package
+
+Perhaps the simplest approach to drawing maps is to use `geom_polygon()` to draw boundaries for different regions.
+
+The `maps` package contains several built in maps: world (for all countries in the world), france, italy, nz, usa, state (usa state boundaries), and county (usa counties). The maps package isn’t particularly accurate or up-to-date, but it’s built into R so it’s an easy place to start.
+
+To reference each map you use `map_data("mapname")`.
+
+```{r message=FALSE, warning=FALSE}
+#LOAD PACKAGES
+library(tidyverse)
+library(maps)
+
+#LOAD DATA
+world_map <- map_data("world")
+
+
+```
+
+# Let look at the structure of our data and some of our variables
+
+```{r}
+str(world_map)
+```
+
+- long = longitude
+- lat = latitude
+- group = a numeric identifier, to trace map polygons. dictates which adjacent coordinates belong together
+- order = sequence in which the groups should be connected
+
+```{r}
+
+
+# World Map
+ggplot(world_map, aes(x = long, y = lat))+ 
+  geom_point( color = "black")+
+  coord_fixed(1.3)
+
+# Connecting our points and creating polygons
+ggplot(world_map, aes(x = long, y = lat, group = group))+
+  geom_polygon(fill = "lightgreen", color = "black")+
+ coord_fixed(1.3)
+
+```
+
+## What about subsetting the data?
+
+```{r}
+#Subset to get Italy
+
+
+#Subset to get USA
+ usa<-world_map |> 
+   filter(region == "USA")
+ 
+ ggplot(usa, aes(x = long, y = lat, group = group))+ 
+   geom_polygon(fill = "lightgreen", color = "black")+
+  coord_fixed(1.3)
+```
+
+## What if aspect ratio is not maintained?
+
+```{r}
+# ASPECT RATIO NOT MAINTAINED
+
+```
+
+```{r}
+# ASPECT RATIO MAINTAINED
+
+```
+
+## USA with states
+
+```{r}
+#Load Data from maps
+usa_states <- map_data("state")
+
+#Plot of USA with state borders
+
+ggplot(usa_states, aes(x = long, y = lat, group = group))+ 
+  geom_polygon(fill = "lightgreen", color = "black")+
+ coord_fixed(1.3)
+
+```
+
+## There are other package that designed to plot specific places
+
+```{r}
+library(usmap)
+
+data<-us_map()
+plot_usmap()
+```
+
+```{r}
+#LOAD PACKAGES
+library(tidyverse)
+library(leaflet)
+```
+
+# Interactive maps using `leaflet`
+
+[`leaflet` is an open-source JavaScript library that is used to create dynamic online maps.](https://bookdown.org/nicohahn/making_maps_with_r5/docs/leaflet.html) The identically named R package makes it possible to create these kinds of maps in R as well.
+
+```{r}
+leaflet() %>%
+  addTiles() %>%
+  setView(lng = -70.61, lat = 42.99, zoom = 5) 
+```
+
+```{r}
+# Load spatial data with intertidal logger locations
+logger_info <- read.csv(file = "data/intertidal_temp_loggers.csv")
+```
+
+## Adding points
+
+```{r}
+leaflet() |> 
+  addTiles() |> 
+  setView(lng = -70.61, lat = 42.99, zoom = 15) |> 
+  addCircleMarkers(data=logger_info, lng = ~longitude, lat = ~latitude, 
+             popup = ~logger, color="orange", opacity=1, weight =2, radius=5, fill = TRUE, fillOpacity=0.8)
+```
+
+## Different backgrounds
+
+```{r, eval=F}
+# Use addProviderTiles(providers$Esri.WorldImagery)
+# addProviderTiles(providers$Esri.WorldGrayCanvas) 
+
+```
+
+## Saving the map
+
+You can take a screenshot of your viewer pane or download a separate pages to same the map.
+
+```{r}
+my_intertidal_map<-leaflet() |> 
+  addTiles() |> 
+  setView(lng = -70.61, lat = 42.99, zoom = 15) |> 
+  addCircleMarkers(data=logger_info, lng = ~longitude, lat = ~latitude, 
+             popup = ~logger, color="orange", opacity=1, weight =2, radius=5, fill = TRUE, fillOpacity=0.8)
+my_intertidal_map
+
+library(mapview)
+library(webshot)
+# webshot::install_phantomjs()
+mapshot(my_intertidal_map, file = "intertidal_map.png")
+```
+
+## Making maps with sf()
+
+This is the most robust method of spatial analysis and becoming the primary package used.
+
+- "sf" stands for simple features
+
+- sf represents geographic vector data (e.g., points, lines, polygons, multipolygon)
+
+- each row is a geographic feature with a special "geometry" column
+
+- because sf spatial data lives in dataframes you can use familiar tools such as those in the tidyverse package
+
+- can handle different coordinate reference systems
+
+- you can read and write shapefiles
+
+- bridges a gap between GIS and data science workflows
+
+# Loading my site data and converting it to sf()
+
+```{r}
+library(sf)
+
+my_points<-read_csv(file = "data/sites.csv")
+
+my_points<-my_points |> 
+  dplyr::rename('latitude' = 'lat',
+                'longitude' = 'lon')
+my_points<-my_points |> 
+  filter(!site == "Portsmouth")
+
+# Looking at my data structure
+my_points
+class(my_points) # my data is stored as a data.frame
+
+my_points<-st_as_sf(my_points, coords = c("longitude", "latitude"), crs = 4326) 
+# st_as_sf() - converts spatial objects into sf objects
+# crs  - coordinate reference system, 4326 is one of the most commonly used and allows us to plot lat and lon
+
+my_points
+# Simple features collection
+# 5 features
+# 3 fields
+
+```
+
+## Ploting a map of Appledore Island
+
+- We will start my importing a shapefile
+- A shapefile (.shp) is a common file format for storing geospatial vector data
+- Stores vector geometry (i.e., point, line, polygon) + attributes about that data
+
+```{r}
+# I downloaded a shapefile from here:
+# https://www.fisheries.noaa.gov/inport/item/61710
+
+# SML Maps -------------------------------------------------
+shoals <-read_sf("data/N40W075.shp") # I loaded my shape file
+
+# Let's look at the data
+
+
+# Trying to figure out what I can filter by to get close to only getting shoals
+shoals <-shoals |> 
+  filter(NOAA_Regio == "North Atlantic") |> 
+  filter(FIPS_ALPHA %in% c("ME", "NH")) 
+
+# Setting this data to crs 4326, so that it is the same as my points
+shoals <- st_transform(shoals, crs = st_crs(4326))
+
+# Okay, let's map!
+line_map<-ggplot(shoals)+
+  geom_sf(col = "lightblue")
+line_map
+
+# Is this what we want?
+
+```
+
+## Changing the bounds of our map
+
+```{r}
+shoals_only<-st_bbox(c(xmin = -70.633048, ymin = 42.984212,
+                       xmax = -70.607067, ymax = 42.994329), crs = st_crs(4326))
+# where are changing the bound of our data, by specifying where we want "zoom" in
+
+shoals_sub<-st_crop(shoals, shoals_only) # crops our object to the rectangle we defined above
+
+line_map_sub<-ggplot(shoals_sub)+
+  geom_sf()
+line_map_sub
+
+# Converting lines into polygons
+shoals_polygon<-st_polygonize(st_union(shoals_sub))
+
+# Now let's plot!
+ggplot(shoals_polygon)+
+  geom_sf(fill = "lightblue", col = "blue")
+
+# My map + my points
+my_shoals_map<- ggplot()+
+  geom_sf(data = shoals_polygon, fill = "lightblue", col = "blue")+
+  geom_sf(data = my_points, aes(color = day))+
+  theme_bw()
+my_shoals_map
+
+# Making it interactive
+ggplotly(my_shoals_map)
+
+
+# What if I want to color my points based on different groups
+my_points$day<-as.factor(my_points$day)
+
+my_shoals_map <- ggplot()+
+  geom_sf(data = shoals_polygon, fill = "lightblue", col = "navyblue")+
+  geom_sf(data = my_points, aes(color = day, shape = day), size = 3 )+
+  geom_sf_text(data = my_points, aes(label = site),
+                      nudge_y = c(0, -0.001, -0.001, 0, 0),
+                      nudge_x = c(-0.009, 0, 0, 0.007, 0.007))+
+  labs(x = "Longitude", y = "Latitude")+
+  theme_bw()
+my_shoals_map
+
+ggsave(my_shoals_map, filename ="my_shoals_map.tiff")
+
+
+# What if I want to color my points based on how many people were there
+
+my_shoals_map <- ggplot()+
+  geom_sf(data = shoals_polygon, fill = "lightgrey", col = "black")+
+  geom_sf(data = my_points, aes(color = people), size = 3 )+
+  geom_sf_text(data = my_points, aes(label = site),
+               nudge_y = c(0, -0.001, -0.001, 0, 0),
+               nudge_x = c(-0.009, 0, 0, 0.007, 0.007))+
+  labs(x = "Longitude", y = "Latitude")+
+  theme_bw()
+my_shoals_map
+
+ggsave(my_shoals_map, filename ="my_shoals_map_people.tiff")
+```
