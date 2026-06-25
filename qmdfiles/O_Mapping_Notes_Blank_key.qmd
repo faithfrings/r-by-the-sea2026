@@ -141,17 +141,17 @@ leaflet() %>%
 
 ```{r}
 # Load spatial data with intertidal logger locations
-logger_info <- read.csv(file = "data/intertidal_temp_loggers.csv")
+# logger_info <- read.csv(file = "data/intertidal_temp_loggers.csv")
 ```
 
 ## Adding points
 
 ```{r}
-leaflet() |> 
-  addTiles() |> 
-  setView(lng = -70.61, lat = 42.99, zoom = 15) |> 
-  addCircleMarkers(data=logger_info, lng = ~longitude, lat = ~latitude, 
-             popup = ~logger, color="orange", opacity=1, weight =2, radius=5, fill = TRUE, fillOpacity=0.8)
+# leaflet() |> 
+#   addTiles() |> 
+#   setView(lng = -70.61, lat = 42.99, zoom = 15) |> 
+#   addCircleMarkers(data=logger_info, lng = ~longitude, lat = ~latitude, 
+#              popup = ~logger, color="orange", opacity=1, weight =2, radius=5, fill = TRUE, fillOpacity=0.8)
 ```
 
 ## Different backgrounds
@@ -167,17 +167,17 @@ leaflet() |>
 You can take a screenshot of your viewer pane or download a separate pages to same the map.
 
 ```{r}
-my_intertidal_map<-leaflet() |> 
-  addTiles() |> 
-  setView(lng = -70.61, lat = 42.99, zoom = 15) |> 
-  addCircleMarkers(data=logger_info, lng = ~longitude, lat = ~latitude, 
-             popup = ~logger, color="orange", opacity=1, weight =2, radius=5, fill = TRUE, fillOpacity=0.8)
-my_intertidal_map
-
-library(mapview)
-library(webshot)
-# webshot::install_phantomjs()
-mapshot(my_intertidal_map, file = "intertidal_map.png")
+# my_intertidal_map<-leaflet() |> 
+#   addTiles() |> 
+#   setView(lng = -70.61, lat = 42.99, zoom = 15) |> 
+#   addCircleMarkers(data=logger_info, lng = ~longitude, lat = ~latitude, 
+#              popup = ~logger, color="orange", opacity=1, weight =2, radius=5, fill = TRUE, fillOpacity=0.8)
+# my_intertidal_map
+# 
+# library(mapview)
+# library(webshot)
+# # webshot::install_phantomjs()
+# mapshot(my_intertidal_map, file = "intertidal_map.png")
 ```
 
 ## Making maps with sf()
@@ -201,28 +201,28 @@ This is the most robust method of spatial analysis and becoming the primary pack
 # Loading my site data and converting it to sf()
 
 ```{r}
-library(sf)
-
-my_points<-read_csv(file = "data/sites.csv")
-
-my_points<-my_points |> 
-  dplyr::rename('latitude' = 'lat',
-                'longitude' = 'lon')
-my_points<-my_points |> 
-  filter(!site == "Portsmouth")
+# library(sf)
+# 
+# my_points<-read_csv(file = "data/sites.csv")
+# 
+# my_points<-my_points |> 
+#   dplyr::rename('latitude' = 'lat',
+#                 'longitude' = 'lon')
+# my_points<-my_points |> 
+#   filter(!site == "Portsmouth")
 
 # Looking at my data structure
-my_points
-class(my_points) # my data is stored as a data.frame
-
-my_points<-st_as_sf(my_points, coords = c("longitude", "latitude"), crs = 4326) 
-# st_as_sf() - converts spatial objects into sf objects
-# crs  - coordinate reference system, 4326 is one of the most commonly used and allows us to plot lat and lon
-
-my_points
-# Simple features collection
-# 5 features
-# 3 fields
+# my_points
+# class(my_points) # my data is stored as a data.frame
+# 
+# my_points<-st_as_sf(my_points, coords = c("longitude", "latitude"), crs = 4326) 
+# # st_as_sf() - converts spatial objects into sf objects
+# # crs  - coordinate reference system, 4326 is one of the most commonly used and allows us to plot lat and lon
+# 
+# my_points
+# # Simple features collection
+# # 5 features
+# # 3 fields
 
 ```
 
@@ -237,23 +237,23 @@ my_points
 # https://www.fisheries.noaa.gov/inport/item/61710
 
 # SML Maps -------------------------------------------------
-shoals <-read_sf("data/N40W075.shp") # I loaded my shape file
+#shoals <-read_sf("data/N40W075.shp") # I loaded my shape file
 
 # Let's look at the data
 
 
 # Trying to figure out what I can filter by to get close to only getting shoals
-shoals <-shoals |> 
-  filter(NOAA_Regio == "North Atlantic") |> 
-  filter(FIPS_ALPHA %in% c("ME", "NH")) 
+# shoals <-shoals |> 
+#   filter(NOAA_Regio == "North Atlantic") |> 
+#   filter(FIPS_ALPHA %in% c("ME", "NH")) 
 
 # Setting this data to crs 4326, so that it is the same as my points
-shoals <- st_transform(shoals, crs = st_crs(4326))
-
-# Okay, let's map!
-line_map<-ggplot(shoals)+
-  geom_sf(col = "lightblue")
-line_map
+# shoals <- st_transform(shoals, crs = st_crs(4326))
+# 
+# # Okay, let's map!
+# line_map<-ggplot(shoals)+
+#   geom_sf(col = "lightblue")
+# line_map
 
 # Is this what we want?
 
@@ -262,61 +262,61 @@ line_map
 ## Changing the bounds of our map
 
 ```{r}
-shoals_only<-st_bbox(c(xmin = -70.633048, ymin = 42.984212,
-                       xmax = -70.607067, ymax = 42.994329), crs = st_crs(4326))
+# shoals_only<-st_bbox(c(xmin = -70.633048, ymin = 42.984212,
+#                        xmax = -70.607067, ymax = 42.994329), crs = st_crs(4326))
 # where are changing the bound of our data, by specifying where we want "zoom" in
 
-shoals_sub<-st_crop(shoals, shoals_only) # crops our object to the rectangle we defined above
-
-line_map_sub<-ggplot(shoals_sub)+
-  geom_sf()
-line_map_sub
+# shoals_sub<-st_crop(shoals, shoals_only) # crops our object to the rectangle we defined above
+# 
+# line_map_sub<-ggplot(shoals_sub)+
+#   geom_sf()
+# line_map_sub
 
 # Converting lines into polygons
-shoals_polygon<-st_polygonize(st_union(shoals_sub))
-
-# Now let's plot!
-ggplot(shoals_polygon)+
-  geom_sf(fill = "lightblue", col = "blue")
+# shoals_polygon<-st_polygonize(st_union(shoals_sub))
+# 
+# # Now let's plot!
+# ggplot(shoals_polygon)+
+#   geom_sf(fill = "lightblue", col = "blue")
 
 # My map + my points
-my_shoals_map<- ggplot()+
-  geom_sf(data = shoals_polygon, fill = "lightblue", col = "blue")+
-  geom_sf(data = my_points, aes(color = day))+
-  theme_bw()
-my_shoals_map
+# my_shoals_map<- ggplot()+
+#   geom_sf(data = shoals_polygon, fill = "lightblue", col = "blue")+
+#   geom_sf(data = my_points, aes(color = day))+
+#   theme_bw()
+# my_shoals_map
 
 # Making it interactive
-ggplotly(my_shoals_map)
+#ggplotly(my_shoals_map)
 
 
 # What if I want to color my points based on different groups
-my_points$day<-as.factor(my_points$day)
+# my_points$day<-as.factor(my_points$day)
+# 
+# my_shoals_map <- ggplot()+
+#   geom_sf(data = shoals_polygon, fill = "lightblue", col = "navyblue")+
+#   geom_sf(data = my_points, aes(color = day, shape = day), size = 3 )+
+#   geom_sf_text(data = my_points, aes(label = site),
+#                       nudge_y = c(0, -0.001, -0.001, 0, 0),
+#                       nudge_x = c(-0.009, 0, 0, 0.007, 0.007))+
+#   labs(x = "Longitude", y = "Latitude")+
+#   theme_bw()
+# my_shoals_map
 
-my_shoals_map <- ggplot()+
-  geom_sf(data = shoals_polygon, fill = "lightblue", col = "navyblue")+
-  geom_sf(data = my_points, aes(color = day, shape = day), size = 3 )+
-  geom_sf_text(data = my_points, aes(label = site),
-                      nudge_y = c(0, -0.001, -0.001, 0, 0),
-                      nudge_x = c(-0.009, 0, 0, 0.007, 0.007))+
-  labs(x = "Longitude", y = "Latitude")+
-  theme_bw()
-my_shoals_map
-
-ggsave(my_shoals_map, filename ="my_shoals_map.tiff")
+#ggsave(my_shoals_map, filename ="my_shoals_map.tiff")
 
 
 # What if I want to color my points based on how many people were there
 
-my_shoals_map <- ggplot()+
-  geom_sf(data = shoals_polygon, fill = "lightgrey", col = "black")+
-  geom_sf(data = my_points, aes(color = people), size = 3 )+
-  geom_sf_text(data = my_points, aes(label = site),
-               nudge_y = c(0, -0.001, -0.001, 0, 0),
-               nudge_x = c(-0.009, 0, 0, 0.007, 0.007))+
-  labs(x = "Longitude", y = "Latitude")+
-  theme_bw()
-my_shoals_map
-
-ggsave(my_shoals_map, filename ="my_shoals_map_people.tiff")
+# my_shoals_map <- ggplot()+
+#   geom_sf(data = shoals_polygon, fill = "lightgrey", col = "black")+
+#   geom_sf(data = my_points, aes(color = people), size = 3 )+
+#   geom_sf_text(data = my_points, aes(label = site),
+#                nudge_y = c(0, -0.001, -0.001, 0, 0),
+#                nudge_x = c(-0.009, 0, 0, 0.007, 0.007))+
+#   labs(x = "Longitude", y = "Latitude")+
+#   theme_bw()
+# my_shoals_map
+# 
+# ggsave(my_shoals_map, filename ="my_shoals_map_people.tiff")
 ```

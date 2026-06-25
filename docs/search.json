@@ -133,11 +133,109 @@
     "text": "#LOAD PACKAGES \nlibrary(tidyverse)\nlibrary(lubridate)\n\n\nDate Formats\nThink of how many different formats you know of to list today’s date:\nYikes!\n\n\nDate, Time, and Datetime\nDate/time data are data that conveys information about, you guessed it, date and/or time! There are three relevant data types when we talk about date/time data:\n\nDate - only has the date (e.g. 2020-05-15)\nTime - only has the time (e.g. 20:45:00)\nDatetime - has both the date and time (e.g. 2020-05-15 20:45:00)\n\n\n\nStandard Date Format\nThe ymd() function transforms data in all kinds of different formats into a standardized date format displaying year, then month, then day.\nmdy() (month day year) and dmy() (day month year) formats also exist.\n\n\nMaking Dates From Values\n\n#make_date\n\n\n#make_datetime\n\n\n\nPortal Data\n\n#LOAD DATA\n#Recall the Portal Dataset\nportal_rodent &lt;- read.csv(\"https://github.com/weecology/PortalData/raw/main/Rodents/Portal_rodent.csv\")\n\nUnfortunately, because the information about datetime is divided up into different columns, R does not recognize it as date/time data. What we need to do is combine and convert all of these columns into datetime. To do this, we can use the function make_date()\n\n\nRounding Times\n\nt &lt;- ymd_hms(\"2022-11-15 00:08:30\")\n\n\n#Round\nround_date(t, unit = \"second\") #no change\n\n[1] \"2022-11-15 00:08:30 UTC\"\n\nround_date(t, unit = \"minute\")\n\n[1] \"2022-11-15 00:09:00 UTC\"\n\n\n\n#Force Round UP\nceiling_date(t, unit = \"minute\")\n\n[1] \"2022-11-15 00:09:00 UTC\"\n\n\n\n#Force Round DOWN\nfloor_date(t, unit = \"minute\")\n\n[1] \"2022-11-15 00:08:00 UTC\""
   },
   {
-    "objectID": "qmdfiles/H_forcats_Homework.html",
-    "href": "qmdfiles/H_forcats_Homework.html",
-    "title": "Homework H",
+    "objectID": "qmdfiles/L_Time_Series_Notes.html",
+    "href": "qmdfiles/L_Time_Series_Notes.html",
+    "title": "Timeseries Analysis",
     "section": "",
-    "text": "Code\n#LOAD PACKAGES \nlibrary(tidyverse)\nlibrary(forcats)\n\n#LOAD DATA\nportal_rodent &lt;- read.csv(\"https://github.com/weecology/PortalData/raw/main/Rodents/Portal_rodent.csv\")\nportal_species &lt;- read.csv(\"https://raw.githubusercontent.com/weecology/PortalData/main/Rodents/Portal_rodent_species.csv\")\n\n\n\nChoose 3 different species of rodents. You may want to choose 3 from the same genus or from 3 different genera for comparison. Create a dataset called my_rodents which has all the data on any rodents of your species of choice caught in Portal, AZ. You should display the time the rodents were captured (year, month, day), the species scientific and common name, and the sex and pregnancy status.\n\n\nCreate a table which displays how many rodents are of each species (or commonname) were recorded over the period of study. Be sure that it’s broken down by sex.\n\n\nConstruct an appropriate plot to display the data above. Be sure information about species (or commonname), sex, and count is all displayed in your plot & that your plot is pretty and nicely labeled.\n\n\nWhat is the order of the levels of species (or commonname) displayed in your chart?\nReorder your the factor for species (or commonname) from highest total number caught (regardless of sex) to lowest total number caught. You might need to do some extra work separate to figure out what this order is.\n\n\nSex is ordered in alphabetically. Reorder sex so that it displays males first and then females.\n\n\nReconstruct your appropriate plot from 3. Be sure the ordering you created in 5 and 6 carries through into your plot.\n\n\nOf the female rodents of each species, what number were captured pregnant? What number were captured when they were not pregnant? Make a nice well-labelled table that is well-labelled including “not pregnant” or something similar."
+    "text": "What is it? Data collected over time.\nTo better understand time series data, we will look at water quality data collected from 2018-2024 at UNH’s Coastal Marine Lab"
+  },
+  {
+    "objectID": "qmdfiles/L_Time_Series_Notes.html#time-series-data",
+    "href": "qmdfiles/L_Time_Series_Notes.html#time-series-data",
+    "title": "Timeseries Analysis",
+    "section": "",
+    "text": "What is it? Data collected over time.\nTo better understand time series data, we will look at water quality data collected from 2018-2024 at UNH’s Coastal Marine Lab"
+  },
+  {
+    "objectID": "qmdfiles/L_Time_Series_Notes.html#load-and-tidy-data",
+    "href": "qmdfiles/L_Time_Series_Notes.html#load-and-tidy-data",
+    "title": "Timeseries Analysis",
+    "section": "Load and tidy data",
+    "text": "Load and tidy data\n\n# Load packages\nlibrary(tidyverse)\n\nWarning: package 'ggplot2' was built under R version 4.4.3\n\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.1.4     ✔ readr     2.1.5\n✔ forcats   1.0.0     ✔ stringr   1.5.1\n✔ ggplot2   4.0.2     ✔ tibble    3.2.1\n✔ lubridate 1.9.4     ✔ tidyr     1.3.1\n✔ purrr     1.0.2     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\n# Load data\n# data&lt;-read.csv(\"data/UNH_CML_2018_2024.csv\")\n\n# time is in \"utc\"\n# temperature is in \"C\"\n\n#data&lt;-data[-1,] # removing the first row\n\n\n# Adjusting the format of my variables and making new variables\n#data &lt;- data |&gt; \n#  mutate(time =  as.POSIXct(time, format = \"%Y-%m-%dT%H:%M:%SZ\", tz=\"UTC\")) |&gt; # converting my time column to datetime format\n#  mutate(temperature = as.numeric(temperature)) |&gt; # convert temp to numeric value\n#  filter(!temperature == -999) |&gt; # filtering out all rows that have -999 in the temperature column\n#  mutate(datetime = time) # making a new column called datetime which has all of the info from the time col\n\n\nMaking even MORE new variables\n\nThese will be helpful for some of the plots I will be crearting later on\n\n\n#data&lt;-data |&gt; \n#  mutate(date = as.Date(datetime), # make date data from my datetime col\n#         year = as.factor(year(datetime)), # extracting only the year\n#         month = as.factor(month(datetime)), # extracting the month\n#         doy = yday(datetime)) # creating a day of the year variable"
+  },
+  {
+    "objectID": "qmdfiles/L_Time_Series_Notes.html#time-series-data-is-comprised-of",
+    "href": "qmdfiles/L_Time_Series_Notes.html#time-series-data-is-comprised-of",
+    "title": "Timeseries Analysis",
+    "section": "Time series data is comprised of:",
+    "text": "Time series data is comprised of:\n\ntrend - long-term progression of dat\nseasonality - repeating patterns\nnoise - random irregular fluctuations\n\nKnowing these different componenets helps us understand patterns of the past and essential for forecasting (i.e., predicting into the future)"
+  },
+  {
+    "objectID": "qmdfiles/L_Time_Series_Notes.html#visualize-our-data-in-different-ways",
+    "href": "qmdfiles/L_Time_Series_Notes.html#visualize-our-data-in-different-ways",
+    "title": "Timeseries Analysis",
+    "section": "Visualize our data in different ways",
+    "text": "Visualize our data in different ways\n\n# Heatmaps are great for time series data!\n#data |&gt; \n#  group_by(year, month) |&gt; # group by year and month\n#  summarise(mean_monthly_temp = mean(temperature)) |&gt; # calculating mean monthly temp\n#  ggplot()+\n#  geom_tile(aes(fill = mean_monthly_temp, x = as.character(month), y = year))+ # create a tile plot, squares will be filled based on the mean_monthly_temp, month will be on the x axis and year will be on the y axis\n#  labs(x = \"Month\", y = \"Year\", fill = \"Mean monthly temperature (C)\")+\n#  scale_x_discrete(labels = month.abb)"
+  },
+  {
+    "objectID": "qmdfiles/O_Mapping_Notes_Blank_key.html#what-about-subsetting-the-data",
+    "href": "qmdfiles/O_Mapping_Notes_Blank_key.html#what-about-subsetting-the-data",
+    "title": "Notes O",
+    "section": "What about subsetting the data?",
+    "text": "What about subsetting the data?\n\n#Subset to get Italy\n\n\n#Subset to get USA\n usa&lt;-world_map |&gt; \n   filter(region == \"USA\")\n \n ggplot(usa, aes(x = long, y = lat, group = group))+ \n   geom_polygon(fill = \"lightgreen\", color = \"black\")+\n  coord_fixed(1.3)"
+  },
+  {
+    "objectID": "qmdfiles/O_Mapping_Notes_Blank_key.html#what-if-aspect-ratio-is-not-maintained",
+    "href": "qmdfiles/O_Mapping_Notes_Blank_key.html#what-if-aspect-ratio-is-not-maintained",
+    "title": "Notes O",
+    "section": "What if aspect ratio is not maintained?",
+    "text": "What if aspect ratio is not maintained?\n\n# ASPECT RATIO NOT MAINTAINED\n\n\n# ASPECT RATIO MAINTAINED"
+  },
+  {
+    "objectID": "qmdfiles/O_Mapping_Notes_Blank_key.html#usa-with-states",
+    "href": "qmdfiles/O_Mapping_Notes_Blank_key.html#usa-with-states",
+    "title": "Notes O",
+    "section": "USA with states",
+    "text": "USA with states\n\n#Load Data from maps\nusa_states &lt;- map_data(\"state\")\n\n#Plot of USA with state borders\n\nggplot(usa_states, aes(x = long, y = lat, group = group))+ \n  geom_polygon(fill = \"lightgreen\", color = \"black\")+\n coord_fixed(1.3)"
+  },
+  {
+    "objectID": "qmdfiles/O_Mapping_Notes_Blank_key.html#there-are-other-package-that-designed-to-plot-specific-places",
+    "href": "qmdfiles/O_Mapping_Notes_Blank_key.html#there-are-other-package-that-designed-to-plot-specific-places",
+    "title": "Notes O",
+    "section": "There are other package that designed to plot specific places",
+    "text": "There are other package that designed to plot specific places\n\nlibrary(usmap)\n\ndata&lt;-us_map()\nplot_usmap()\n\n\n\n\n\n\n\n\n\n#LOAD PACKAGES\nlibrary(tidyverse)\nlibrary(leaflet)"
+  },
+  {
+    "objectID": "qmdfiles/O_Mapping_Notes_Blank_key.html#adding-points",
+    "href": "qmdfiles/O_Mapping_Notes_Blank_key.html#adding-points",
+    "title": "Notes O",
+    "section": "Adding points",
+    "text": "Adding points\n\n# leaflet() |&gt; \n#   addTiles() |&gt; \n#   setView(lng = -70.61, lat = 42.99, zoom = 15) |&gt; \n#   addCircleMarkers(data=logger_info, lng = ~longitude, lat = ~latitude, \n#              popup = ~logger, color=\"orange\", opacity=1, weight =2, radius=5, fill = TRUE, fillOpacity=0.8)"
+  },
+  {
+    "objectID": "qmdfiles/O_Mapping_Notes_Blank_key.html#different-backgrounds",
+    "href": "qmdfiles/O_Mapping_Notes_Blank_key.html#different-backgrounds",
+    "title": "Notes O",
+    "section": "Different backgrounds",
+    "text": "Different backgrounds\n\n# Use addProviderTiles(providers$Esri.WorldImagery)\n# addProviderTiles(providers$Esri.WorldGrayCanvas)"
+  },
+  {
+    "objectID": "qmdfiles/O_Mapping_Notes_Blank_key.html#saving-the-map",
+    "href": "qmdfiles/O_Mapping_Notes_Blank_key.html#saving-the-map",
+    "title": "Notes O",
+    "section": "Saving the map",
+    "text": "Saving the map\nYou can take a screenshot of your viewer pane or download a separate pages to same the map.\n\n# my_intertidal_map&lt;-leaflet() |&gt; \n#   addTiles() |&gt; \n#   setView(lng = -70.61, lat = 42.99, zoom = 15) |&gt; \n#   addCircleMarkers(data=logger_info, lng = ~longitude, lat = ~latitude, \n#              popup = ~logger, color=\"orange\", opacity=1, weight =2, radius=5, fill = TRUE, fillOpacity=0.8)\n# my_intertidal_map\n# \n# library(mapview)\n# library(webshot)\n# # webshot::install_phantomjs()\n# mapshot(my_intertidal_map, file = \"intertidal_map.png\")"
+  },
+  {
+    "objectID": "qmdfiles/O_Mapping_Notes_Blank_key.html#making-maps-with-sf",
+    "href": "qmdfiles/O_Mapping_Notes_Blank_key.html#making-maps-with-sf",
+    "title": "Notes O",
+    "section": "Making maps with sf()",
+    "text": "Making maps with sf()\nThis is the most robust method of spatial analysis and becoming the primary package used.\n\n“sf” stands for simple features\nsf represents geographic vector data (e.g., points, lines, polygons, multipolygon)\neach row is a geographic feature with a special “geometry” column\nbecause sf spatial data lives in dataframes you can use familiar tools such as those in the tidyverse package\ncan handle different coordinate reference systems\nyou can read and write shapefiles\nbridges a gap between GIS and data science workflows"
+  },
+  {
+    "objectID": "qmdfiles/O_Mapping_Notes_Blank_key.html#ploting-a-map-of-appledore-island",
+    "href": "qmdfiles/O_Mapping_Notes_Blank_key.html#ploting-a-map-of-appledore-island",
+    "title": "Notes O",
+    "section": "Ploting a map of Appledore Island",
+    "text": "Ploting a map of Appledore Island\n\nWe will start my importing a shapefile\nA shapefile (.shp) is a common file format for storing geospatial vector data\nStores vector geometry (i.e., point, line, polygon) + attributes about that data\n\n\n# I downloaded a shapefile from here:\n# https://www.fisheries.noaa.gov/inport/item/61710\n\n# SML Maps -------------------------------------------------\n#shoals &lt;-read_sf(\"data/N40W075.shp\") # I loaded my shape file\n\n# Let's look at the data\n\n\n# Trying to figure out what I can filter by to get close to only getting shoals\n# shoals &lt;-shoals |&gt; \n#   filter(NOAA_Regio == \"North Atlantic\") |&gt; \n#   filter(FIPS_ALPHA %in% c(\"ME\", \"NH\")) \n\n# Setting this data to crs 4326, so that it is the same as my points\n# shoals &lt;- st_transform(shoals, crs = st_crs(4326))\n# \n# # Okay, let's map!\n# line_map&lt;-ggplot(shoals)+\n#   geom_sf(col = \"lightblue\")\n# line_map\n\n# Is this what we want?"
+  },
+  {
+    "objectID": "qmdfiles/O_Mapping_Notes_Blank_key.html#changing-the-bounds-of-our-map",
+    "href": "qmdfiles/O_Mapping_Notes_Blank_key.html#changing-the-bounds-of-our-map",
+    "title": "Notes O",
+    "section": "Changing the bounds of our map",
+    "text": "Changing the bounds of our map\n\n# shoals_only&lt;-st_bbox(c(xmin = -70.633048, ymin = 42.984212,\n#                        xmax = -70.607067, ymax = 42.994329), crs = st_crs(4326))\n# where are changing the bound of our data, by specifying where we want \"zoom\" in\n\n# shoals_sub&lt;-st_crop(shoals, shoals_only) # crops our object to the rectangle we defined above\n# \n# line_map_sub&lt;-ggplot(shoals_sub)+\n#   geom_sf()\n# line_map_sub\n\n# Converting lines into polygons\n# shoals_polygon&lt;-st_polygonize(st_union(shoals_sub))\n# \n# # Now let's plot!\n# ggplot(shoals_polygon)+\n#   geom_sf(fill = \"lightblue\", col = \"blue\")\n\n# My map + my points\n# my_shoals_map&lt;- ggplot()+\n#   geom_sf(data = shoals_polygon, fill = \"lightblue\", col = \"blue\")+\n#   geom_sf(data = my_points, aes(color = day))+\n#   theme_bw()\n# my_shoals_map\n\n# Making it interactive\n#ggplotly(my_shoals_map)\n\n\n# What if I want to color my points based on different groups\n# my_points$day&lt;-as.factor(my_points$day)\n# \n# my_shoals_map &lt;- ggplot()+\n#   geom_sf(data = shoals_polygon, fill = \"lightblue\", col = \"navyblue\")+\n#   geom_sf(data = my_points, aes(color = day, shape = day), size = 3 )+\n#   geom_sf_text(data = my_points, aes(label = site),\n#                       nudge_y = c(0, -0.001, -0.001, 0, 0),\n#                       nudge_x = c(-0.009, 0, 0, 0.007, 0.007))+\n#   labs(x = \"Longitude\", y = \"Latitude\")+\n#   theme_bw()\n# my_shoals_map\n\n#ggsave(my_shoals_map, filename =\"my_shoals_map.tiff\")\n\n\n# What if I want to color my points based on how many people were there\n\n# my_shoals_map &lt;- ggplot()+\n#   geom_sf(data = shoals_polygon, fill = \"lightgrey\", col = \"black\")+\n#   geom_sf(data = my_points, aes(color = people), size = 3 )+\n#   geom_sf_text(data = my_points, aes(label = site),\n#                nudge_y = c(0, -0.001, -0.001, 0, 0),\n#                nudge_x = c(-0.009, 0, 0, 0.007, 0.007))+\n#   labs(x = \"Longitude\", y = \"Latitude\")+\n#   theme_bw()\n# my_shoals_map\n# \n# ggsave(my_shoals_map, filename =\"my_shoals_map_people.tiff\")"
   },
   {
     "objectID": "qmdfiles/A_Intro_Homework.html",
@@ -257,6 +355,13 @@
     "title": "Homework K",
     "section": "",
     "text": "Code\n#LOAD PACKAGES \nlibrary(tidyverse)\nlibrary(lubridate)\n\n# LOAD DATA\npower &lt;- read.csv(\"../data/power.csv\")\n\n\n\nuse the SML Data Dashboard to recreate a dataset for 2024. (Wind Power and Wind Speed)\nUse lubridate the date column a date data type.\n\n\nUse tables and/or text to provide some background on the data. How many data points are there? Over what time frame? What are the means and ranges of some key parameters?\n\n\nBuild a plot of daily power generation of solar and wind over the 2024 season so far. Comment on the trends.\n\n\nBuild a plot of power generated so far in 2024 over time? How does the amount compare to the amount produced in the first part of 2023? Comment on the trends.\n\n\nBuild a plot of any two variables (or more!) that you find interesting. Write a few sentences of what you find."
+  },
+  {
+    "objectID": "qmdfiles/H_forcats_Homework.html",
+    "href": "qmdfiles/H_forcats_Homework.html",
+    "title": "Homework H",
+    "section": "",
+    "text": "Code\n#LOAD PACKAGES \nlibrary(tidyverse)\nlibrary(forcats)\n\n#LOAD DATA\nportal_rodent &lt;- read.csv(\"https://github.com/weecology/PortalData/raw/main/Rodents/Portal_rodent.csv\")\nportal_species &lt;- read.csv(\"https://raw.githubusercontent.com/weecology/PortalData/main/Rodents/Portal_rodent_species.csv\")\n\n\n\nChoose 3 different species of rodents. You may want to choose 3 from the same genus or from 3 different genera for comparison. Create a dataset called my_rodents which has all the data on any rodents of your species of choice caught in Portal, AZ. You should display the time the rodents were captured (year, month, day), the species scientific and common name, and the sex and pregnancy status.\n\n\nCreate a table which displays how many rodents are of each species (or commonname) were recorded over the period of study. Be sure that it’s broken down by sex.\n\n\nConstruct an appropriate plot to display the data above. Be sure information about species (or commonname), sex, and count is all displayed in your plot & that your plot is pretty and nicely labeled.\n\n\nWhat is the order of the levels of species (or commonname) displayed in your chart?\nReorder your the factor for species (or commonname) from highest total number caught (regardless of sex) to lowest total number caught. You might need to do some extra work separate to figure out what this order is.\n\n\nSex is ordered in alphabetically. Reorder sex so that it displays males first and then females.\n\n\nReconstruct your appropriate plot from 3. Be sure the ordering you created in 5 and 6 carries through into your plot.\n\n\nOf the female rodents of each species, what number were captured pregnant? What number were captured when they were not pregnant? Make a nice well-labelled table that is well-labelled including “not pregnant” or something similar."
   },
   {
     "objectID": "qmdfiles/H_forcats_Notes_Blank.html",
@@ -537,40 +642,5 @@
     "title": "Notes P",
     "section": "customizing axes breaks",
     "text": "customizing axes breaks\nsp\nsp + \n  scale_y_continuous(breaks=c(2,3,4,5))"
-  },
-  {
-    "objectID": "qmdfiles/L_Time_Series_Notes.html",
-    "href": "qmdfiles/L_Time_Series_Notes.html",
-    "title": "Timeseries Analysis",
-    "section": "",
-    "text": "What is it? Data collected over time.\nTo better understand time series data, we will look at water quality data collected from 2018-2024 at UNH’s Coastal Marine Lab"
-  },
-  {
-    "objectID": "qmdfiles/L_Time_Series_Notes.html#time-series-data",
-    "href": "qmdfiles/L_Time_Series_Notes.html#time-series-data",
-    "title": "Timeseries Analysis",
-    "section": "",
-    "text": "What is it? Data collected over time.\nTo better understand time series data, we will look at water quality data collected from 2018-2024 at UNH’s Coastal Marine Lab"
-  },
-  {
-    "objectID": "qmdfiles/L_Time_Series_Notes.html#load-and-tidy-data",
-    "href": "qmdfiles/L_Time_Series_Notes.html#load-and-tidy-data",
-    "title": "Timeseries Analysis",
-    "section": "Load and tidy data",
-    "text": "Load and tidy data\n\n# Load packages\nlibrary(tidyverse)\n\nWarning: package 'ggplot2' was built under R version 4.4.3\n\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.1.4     ✔ readr     2.1.5\n✔ forcats   1.0.0     ✔ stringr   1.5.1\n✔ ggplot2   4.0.2     ✔ tibble    3.2.1\n✔ lubridate 1.9.4     ✔ tidyr     1.3.1\n✔ purrr     1.0.2     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\n# Load data\n# data&lt;-read.csv(\"data/UNH_CML_2018_2024.csv\")\n\n# time is in \"utc\"\n# temperature is in \"C\"\n\n#data&lt;-data[-1,] # removing the first row\n\n\n# Adjusting the format of my variables and making new variables\n#data &lt;- data |&gt; \n#  mutate(time =  as.POSIXct(time, format = \"%Y-%m-%dT%H:%M:%SZ\", tz=\"UTC\")) |&gt; # converting my time column to datetime format\n#  mutate(temperature = as.numeric(temperature)) |&gt; # convert temp to numeric value\n#  filter(!temperature == -999) |&gt; # filtering out all rows that have -999 in the temperature column\n#  mutate(datetime = time) # making a new column called datetime which has all of the info from the time col\n\n\nMaking even MORE new variables\n\nThese will be helpful for some of the plots I will be crearting later on\n\n\n#data&lt;-data |&gt; \n#  mutate(date = as.Date(datetime), # make date data from my datetime col\n#         year = as.factor(year(datetime)), # extracting only the year\n#         month = as.factor(month(datetime)), # extracting the month\n#         doy = yday(datetime)) # creating a day of the year variable"
-  },
-  {
-    "objectID": "qmdfiles/L_Time_Series_Notes.html#time-series-data-is-comprised-of",
-    "href": "qmdfiles/L_Time_Series_Notes.html#time-series-data-is-comprised-of",
-    "title": "Timeseries Analysis",
-    "section": "Time series data is comprised of:",
-    "text": "Time series data is comprised of:\n\ntrend - long-term progression of dat\nseasonality - repeating patterns\nnoise - random irregular fluctuations\n\nKnowing these different componenets helps us understand patterns of the past and essential for forecasting (i.e., predicting into the future)"
-  },
-  {
-    "objectID": "qmdfiles/L_Time_Series_Notes.html#visualize-our-data-in-different-ways",
-    "href": "qmdfiles/L_Time_Series_Notes.html#visualize-our-data-in-different-ways",
-    "title": "Timeseries Analysis",
-    "section": "Visualize our data in different ways",
-    "text": "Visualize our data in different ways\n\n# Heatmaps are great for time series data!\n#data |&gt; \n#  group_by(year, month) |&gt; # group by year and month\n#  summarise(mean_monthly_temp = mean(temperature)) |&gt; # calculating mean monthly temp\n#  ggplot()+\n#  geom_tile(aes(fill = mean_monthly_temp, x = as.character(month), y = year))+ # create a tile plot, squares will be filled based on the mean_monthly_temp, month will be on the x axis and year will be on the y axis\n#  labs(x = \"Month\", y = \"Year\", fill = \"Mean monthly temperature (C)\")+\n#  scale_x_discrete(labels = month.abb)"
   }
 ]
