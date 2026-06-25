@@ -1,0 +1,124 @@
+---
+title: "Timeseries Analysis"
+format: html
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+## Time series data
+
+- What is it? Data collected over time.
+- To better understand time series data, we will look at water quality data collected from 2018-2024 at UNH's Coastal Marine Lab
+
+## Load and tidy data
+
+```{r}
+# Load packages
+library(tidyverse)
+
+# Load data
+# data<-read.csv("data/UNH_CML_2018_2024.csv")
+
+# time is in "utc"
+# temperature is in "C"
+
+#data<-data[-1,] # removing the first row
+
+
+# Adjusting the format of my variables and making new variables
+#data <- data |> 
+#  mutate(time =  as.POSIXct(time, format = "%Y-%m-%dT%H:%M:%SZ", tz="UTC")) |> # converting my time column to datetime format
+#  mutate(temperature = as.numeric(temperature)) |> # convert temp to numeric value
+#  filter(!temperature == -999) |> # filtering out all rows that have -999 in the temperature column
+#  mutate(datetime = time) # making a new column called datetime which has all of the info from the time col
+  
+```
+
+### Making even MORE new variables
+
+- These will be helpful for some of the plots I will be crearting later on
+
+```{r}
+#data<-data |> 
+#  mutate(date = as.Date(datetime), # make date data from my datetime col
+#         year = as.factor(year(datetime)), # extracting only the year
+#         month = as.factor(month(datetime)), # extracting the month
+#         doy = yday(datetime)) # creating a day of the year variable
+```
+
+## Time series data is comprised of:
+
+1)  trend - long-term progression of dat
+2)  seasonality - repeating patterns
+3)  noise - random irregular fluctuations
+
+Knowing these different componenets helps us understand patterns of the past and essential for forecasting (i.e., predicting into the future)
+
+# Plotting our data
+
+```{r}
+
+#ggplot(data = data, aes(x = datetime, y = temperature))+ # plot datetime on the x axis and temperature on the y
+#  geom_point(size = 0.1) # make this a scatter plot
+
+# Is there a *trend*?
+#plot<-ggplot(data = data, aes(x = datetime, y = temperature))+ #save my plot as an object called "plot"
+#  geom_point(size = 0.1)+
+# geom_smooth(method = "lm") #add a trend line
+##plot # call/display my "plot"
+
+library(plotly)
+# Plottly makes your plots interactive
+#ggplotly(plot) # display my plot using ggplotly()
+
+
+# Lets look at different types of *seasonality* in our data.
+#data |> 
+#  group_by(year, doy) |> # group by year and doy (day of the year)
+#  ggplot(aes(x = doy, y = temperature, color = year))+ # plot doy on x axis, and temp on y, color by year
+#  labs(x ="Day of year" , y = "Temperature")+ # adjust lables 
+#  facet_wrap(~ year) # separate plots based on year
+
+# Let's make a time column to look at patterns across a DAY
+
+library(hms) 
+
+# Looking at daily pattern
+#year2022<-data |> # create a new object year2022
+#  filter(year == 2022) |> # filter out year 2022 
+#  mutate(datetime = lubridate::round_date(datetime, unit = "hour")) #|> # round our datetime to hours
+#  mutate(eastern_datetime = with_tz(datetime, tz = "America/New_York")) |> # converting my datetime to eastern
+#  mutate(eastern_time = as_hms(eastern_datetime)) # extract only time
+  
+# Plotting year 2022 data
+#year2022 |> 
+#  group_by(eastern_time) |> # group by time/hour
+#  ggplot(aes(x = eastern_time, y = temperature)) +
+#  geom_point(size = 0.1)
+
+# A little hard to interpret, let's take some summary stats
+#year2022 |> 
+#  group_by(eastern_time) |> 
+#  summarise(mean_temperature = mean(temperature)) |> 
+#  ggplot(aes(x = eastern_time, y = mean_temperature))+
+#  geom_point()+
+#  geom_line()
+
+```
+
+## Visualize our data in different ways
+
+```{r}
+
+# Heatmaps are great for time series data!
+#data |> 
+#  group_by(year, month) |> # group by year and month
+#  summarise(mean_monthly_temp = mean(temperature)) |> # calculating mean monthly temp
+#  ggplot()+
+#  geom_tile(aes(fill = mean_monthly_temp, x = as.character(month), y = year))+ # create a tile plot, squares will be filled based on the mean_monthly_temp, month will be on the x axis and year will be on the y axis
+#  labs(x = "Month", y = "Year", fill = "Mean monthly temperature (C)")+
+#  scale_x_discrete(labels = month.abb)
+
+
+```
